@@ -24,13 +24,16 @@ var UserSchema = _mongoose2.default.Schema({
 		hash: String,
 		salt: String
 	},
-	username: String,
 	dateCreated: { type: Date, default: Date.now },
-	blogPosts: [{ title: String, body: String }],
+	blogpostsUrl: String,
+	username: String,
 	profile: {
 		name: { type: String, default: 'hi' },
 		description: { type: String, default: 'Welcome to my blog!' }
-	}
+	},
+	followersUrl: String,
+	followingUrl: String,
+	starsUrl: String
 });
 
 UserSchema.methods.setPassword = function (password) {
