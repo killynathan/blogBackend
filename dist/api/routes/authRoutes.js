@@ -8,7 +8,7 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _apihelpers = require('../apihelpers');
+var _apiHelpers = require('../apiHelpers');
 
 var _passport = require('passport');
 
@@ -22,11 +22,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (router) {
 	router.post('/register', function (req, res, next) {
-		if (!req.body.username || !req.body.password) return (0, _apihelpers.handleError)(res, 'missing username/password', 'missing username/password', 400);
+		if (!req.body.username || !req.body.password) return (0, _apiHelpers.handleError)(res, 'missing username/password', 'missing username/password', 400);
 
 		_User2.default.findOne({ 'username': req.body.username }, function (err, user) {
 			if (err) {
-				(0, _apihelpers.handleError)(res, err.message, "failed to get user");
+				(0, _apiHelpers.handleError)(res, err.message, "failed to get user");
 			} else {
 				if (user) {
 					res.status(400).json({
@@ -40,7 +40,7 @@ exports.default = function (router) {
 					newUser.profile.name = req.body.username;
 					newUser.blogpostsUrl = '/users/' + req.body.username + '/blogposts';
 					newUser.save(function (err, user) {
-						if (err) (0, _apihelpers.handleError)(res, err.message, 'failed to create user');else return res.status(201).json({
+						if (err) (0, _apiHelpers.handleError)(res, err.message, 'failed to create user');else return res.status(201).json({
 							message: 'created new user',
 							data: user
 						});
@@ -53,10 +53,10 @@ exports.default = function (router) {
 	router.post('/login', function (req, res, next) {
 
 		_passport2.default.authenticate('local', function (err, user, info) {
-			if (err) return (0, _apihelpers.handleError)(res, err.message, 'failed to authenticate user');
-			if (!user) return (0, _apihelpers.handleError)(res, 'wrong email/pass', 'wrong email/pass', 400);
+			if (err) return (0, _apiHelpers.handleError)(res, err.message, 'failed to authenticate user');
+			if (!user) return (0, _apiHelpers.handleError)(res, 'wrong email/pass', 'wrong email/pass', 400);
 			req.login(user, function (err) {
-				if (err) return (0, _apihelpers.handleError)(res, err.message, 'failed to login');
+				if (err) return (0, _apiHelpers.handleError)(res, err.message, 'failed to login');
 				return res.status(200).json({ message: 'logged in', data: user, token: user.generateJWT() });
 			});
 		})(req, res, next);
